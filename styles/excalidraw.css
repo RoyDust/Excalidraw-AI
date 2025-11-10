@@ -1,0 +1,352 @@
+/* Excalidraw with Apple UI 风格样式 */
+
+/* 使用 Apple UI 字体和样式变量 */
+.excalidraw {
+  --ui-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", system-ui, sans-serif;
+  --focus-ring: 0 0 0 3px rgba(0, 122, 255, 0.15);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --transition: all var(--duration-quick) var(--ease-out);
+}
+
+/* 菜单顶部 - Apple 风格 */
+.excalidraw .App-menu_top {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--ui-font);
+  border-bottom: 1px solid var(--border-light);
+  padding: 0;
+}
+
+/* 菜单左侧 - Apple 风格 */
+.excalidraw .App-menu_left {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--ui-font);
+  border-right: 1px solid var(--border-light);
+}
+
+/* 按钮样式 - Apple 风格 */
+.excalidraw .buttonList button,
+.excalidraw .App-menu_top button,
+.excalidraw .App-menu_left button {
+  font-family: var(--ui-font);
+  font-size: 17px;
+  font-weight: 600;
+  min-height: 44px;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: transparent;
+  color: var(--text-primary);
+  transition: var(--transition);
+  cursor: pointer;
+}
+
+.excalidraw .buttonList button:hover,
+.excalidraw .App-menu_top button:hover,
+.excalidraw .App-menu_left button:hover {
+  background: var(--bg-secondary);
+  transform: translateY(-1px);
+}
+
+.excalidraw .buttonList button:active,
+.excalidraw .App-menu_top button:active,
+.excalidraw .App-menu_left button:active {
+  transform: translateY(0);
+  opacity: 0.8;
+}
+
+.excalidraw .buttonList button:focus-visible,
+.excalidraw .App-menu_top button:focus-visible,
+.excalidraw .App-menu_left button:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+/* 当前活跃按钮 */
+.excalidraw .buttonList button.is-active,
+.excalidraw .App-menu_top button.is-active,
+.excalidraw .App-menu_left button.is-active {
+  background: var(--brand-blue);
+  color: white;
+}
+
+/* 工具栏样式 */
+.excalidraw .App-menu_top .App-toolbar {
+  padding: var(--space-sm) var(--space-md);
+  gap: var(--space-sm);
+}
+
+/* 侧边栏工具组 */
+.excalidraw .App-menu_left .sidebar-content {
+  padding: var(--space-md);
+  gap: var(--space-sm);
+}
+
+/* 输入框样式 - Apple 风格 */
+.excalidraw input,
+.excalidraw textarea,
+.excalidraw select {
+  font-family: var(--ui-font);
+  font-size: 17px;
+  height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transition: var(--transition);
+}
+
+.excalidraw input:focus,
+.excalidraw textarea:focus,
+.excalidraw select:focus {
+  outline: none;
+  border-color: var(--brand-blue);
+  box-shadow: var(--focus-ring);
+}
+
+.excalidraw input::placeholder,
+.excalidraw textarea::placeholder {
+  color: var(--text-tertiary);
+}
+
+/* 标签页样式 */
+.excalidraw .tabs {
+  display: flex;
+  gap: 2px;
+  padding: var(--space-xs);
+  background: var(--bg-secondary);
+  border-radius: var(--radius-sm);
+}
+
+.excalidraw .tab {
+  font-family: var(--ui-font);
+  font-size: 15px;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-secondary);
+  transition: var(--transition);
+  cursor: pointer;
+  border: none;
+}
+
+.excalidraw .tab:hover {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.excalidraw .tab.active {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* 卡片样式 */
+.excalidraw .card {
+  background: var(--bg-primary);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 列表项样式 */
+.excalidraw .list-item {
+  font-family: var(--ui-font);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-sm);
+  transition: var(--transition);
+  cursor: pointer;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.excalidraw .list-item:hover {
+  background: var(--bg-secondary);
+}
+
+.excalidraw .list-item.selected {
+  background: var(--bg-secondary);
+  font-weight: 600;
+}
+
+/* 颜色选择器样式 */
+.excalidraw .color-picker-container {
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.excalidraw .color-picker-container button {
+  border-radius: 0;
+}
+
+/* 模态框样式 */
+.excalidraw .dialog {
+  background: var(--bg-primary);
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+  font-family: var(--ui-font);
+}
+
+.excalidraw .dialog__header {
+  padding: var(--space-lg);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.excalidraw .dialog__header h2 {
+  font: var(--font-headline);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.excalidraw .dialog__body {
+  padding: var(--space-lg);
+}
+
+.excalidraw .dialog__footer {
+  padding: var(--space-md) var(--space-lg);
+  border-top: 1px solid var(--border-light);
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-sm);
+}
+
+/* 聚焦环样式 */
+.excalidraw .focus-ring {
+  box-shadow: var(--focus-ring);
+}
+
+/* 工具提示样式 */
+.excalidraw .tooltip {
+  font-family: var(--ui-font);
+  font-size: 13px;
+  font-weight: 600;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 6px 10px;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* 滑块样式 */
+.excalidraw input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 32px;
+  background: transparent;
+}
+
+.excalidraw input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px;
+  background: var(--bg-secondary);
+  border-radius: 2px;
+}
+
+.excalidraw input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  background: var(--brand-blue);
+  border-radius: 50%;
+  margin-top: -10px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: var(--transition);
+}
+
+.excalidraw input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+}
+
+.excalidraw input[type="range"]::-moz-range-track {
+  height: 4px;
+  background: var(--bg-secondary);
+  border-radius: 2px;
+  border: none;
+}
+
+.excalidraw input[type="range"]::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  background: var(--brand-blue);
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: var(--transition);
+}
+
+/* 滚动条样式 - WebKit */
+.excalidraw ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.excalidraw ::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.excalidraw ::-webkit-scrollbar-thumb {
+  background: var(--border-light);
+  border-radius: 4px;
+}
+
+.excalidraw ::-webkit-scrollbar-thumb:hover {
+  background: rgba(60, 60, 67, 0.5);
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .excalidraw .App-menu_top .App-toolbar {
+    padding: var(--space-xs) var(--space-sm);
+    gap: var(--space-xs);
+  }
+
+  .excalidraw .App-menu_left .sidebar-content {
+    padding: var(--space-sm);
+  }
+
+  .excalidraw .buttonList button,
+  .excalidraw .App-menu_top button,
+  .excalidraw .App-menu_left button {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 8px 12px;
+  }
+}
+
+/* 深色模式适配 */
+@media (prefers-color-scheme: dark) {
+  .excalidraw .App-menu_top,
+  .excalidraw .App-menu_left {
+    border-color: var(--border-light);
+  }
+
+  .excalidraw .tabs {
+    background: var(--bg-secondary);
+  }
+
+  .excalidraw .dialog {
+    background: var(--bg-primary);
+  }
+
+  .excalidraw .tooltip {
+    background: rgba(255, 255, 255, 0.9);
+    color: #000;
+  }
+}
+
+/* 减少动画偏好支持 */
+@media (prefers-reduced-motion: reduce) {
+  .excalidraw *,
+  .excalidraw *::before,
+  .excalidraw *::after {
+    transition-duration: 0.01ms !important;
+  }
+}
