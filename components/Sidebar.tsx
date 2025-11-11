@@ -19,7 +19,7 @@ const sidebarItems: SidebarItem[] = [
   },
   {
     id: 'ai-settings',
-    label: 'AI设置',
+    label: 'AI配置',
     icon: <Settings className="w-5 h-5" />,
     path: '/settings',
   },
@@ -52,7 +52,7 @@ export default function Sidebar({
   return (
     <aside className={`sidebar bg-[#FAFBFC] border-r border-[rgba(0,0,0,0.06)] ${collapsed ? 'collapsed' : ''}`}>
       <div className="sidebar-header border-b border-[rgba(0,0,0,0.06)] p-6">
-        <h1 className="text-[28px] font-normal leading-[1.25] text-[#1D1D1F] m-0 mb-1">Excalidraw AI</h1>
+        <h1 className="text-[28px] leading-[1.25] text-[#1D1D1F] m-0 mb-1" style={{ fontFamily: 'var(--font-artistic)' }}>Excalidraw AI</h1>
         <p className="text-[15px] leading-[1.4] text-[rgba(0,0,0,0.35)] m-0">AI驱动的图表生成</p>
       </div>
 

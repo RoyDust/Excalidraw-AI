@@ -14,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="zh-CN" suppressHydrationWarning>
-      <body>
+      <body className="alibaba-puhuiti">
         <AuthProvider>{children}</AuthProvider>
       </body>
     </html>

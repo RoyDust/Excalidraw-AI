@@ -1,5 +1,30 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:is(.dark *));
+
+/* ==========================================================================
+   字体导入
+   ========================================================================== */
+
+/* 阿里巴巴普惠体 */
+@font-face {
+  font-family: 'Alibaba PuHuiTi';
+  src: url('https://at.alicdn.com/wf/webfont/exMpJIukiCms/Gsw2PSKrftc1yNWMNlXgw.woff2') format('woff2'),
+       url('https://at.alicdn.com/wf/webfont/exMpJIukiCms/Gsw2PSKrftc1yNWMNlXgw.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* 优美艺术字体 - 马善政楷书 */
+@font-face {
+  font-family: 'Ma Shan Zheng';
+  src: url('https://fonts.gstatic.com/s/mashanzheng/v10/NaPecZTRCLxvwo41b4gvzkXaRMTsDIRSfr0.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* ==========================================================================
    Apple UI 风格设计系统
    ========================================================================== */
@@ -53,13 +78,16 @@
     --border-medium: rgba(0, 0, 0, 0.1);    /* 标准边框 */
     --border-dark: rgba(0, 0, 0, 0.15);     /* 深色边框 */
 
-    /* Apple UI 字体系统 */
-    --font-display-1: 700 34px/1.2 -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
-    --font-display-2: 400 28px/1.25 -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
-    --font-headline: 400 22px/1.3 -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
-    --font-body: 400 17px/1.47 -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
-    --font-subhead: 400 15px/1.4 -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
-    --font-caption: 600 13px/1.4 -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+    /* Apple UI 字体系统 - 使用阿里巴巴普惠体 */
+    --font-display-1: 700 34px/1.2 "Alibaba PuHuiTi", -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
+    --font-display-2: 400 28px/1.25 "Alibaba PuHuiTi", -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
+    --font-headline: 400 22px/1.3 "Alibaba PuHuiTi", -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+    --font-body: 400 17px/1.47 "Alibaba PuHuiTi", -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+    --font-subhead: 400 15px/1.4 "Alibaba PuHuiTi", -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+    --font-caption: 600 13px/1.4 "Alibaba PuHuiTi", -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+
+    /* 艺术字体 - 用于标题 */
+    --font-artistic: 400 28px/1.25 "Ma Shan Zheng", cursive;
 
     /* Apple UI 间距系统（基于 8px 网格） */
     --space-xs: 4px;
@@ -131,6 +159,10 @@
 
   .text-caption {
     font: var(--font-caption);
+  }
+
+  .text-artistic {
+    font: var(--font-artistic);
   }
 
   /* 文本颜色类 */
@@ -786,5 +818,67 @@
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
     }
+  }
+}
+
+:root {
+  --sidebar: hsl(0 0% 98%);
+  --sidebar-foreground: hsl(240 5.3% 26.1%);
+  --sidebar-primary: hsl(240 5.9% 10%);
+  --sidebar-primary-foreground: hsl(0 0% 98%);
+  --sidebar-accent: hsl(240 4.8% 95.9%);
+  --sidebar-accent-foreground: hsl(240 5.9% 10%);
+  --sidebar-border: hsl(220 13% 91%);
+  --sidebar-ring: hsl(217.2 91.2% 59.8%);
+}
+
+.dark {
+  --sidebar: hsl(240 5.9% 10%);
+  --sidebar-foreground: hsl(240 4.8% 95.9%);
+  --sidebar-primary: hsl(224.3 76.3% 48%);
+  --sidebar-primary-foreground: hsl(0 0% 100%);
+  --sidebar-accent: hsl(240 3.7% 15.9%);
+  --sidebar-accent-foreground: hsl(240 4.8% 95.9%);
+  --sidebar-border: hsl(240 3.7% 15.9%);
+  --sidebar-ring: hsl(217.2 91.2% 59.8%);
+}
+
+@theme inline {
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
   }
 }
