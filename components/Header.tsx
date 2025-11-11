@@ -1,6 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
+import { Settings, User, LogOut } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { useRouter } from 'next/navigation';
 
 interface HeaderProps {
   aiModelName: string;
@@ -9,49 +12,28 @@ interface HeaderProps {
 
 export default function Header({ aiModelName, onOpenSettings }: HeaderProps) {
   const [showUserMenu, setShowUserMenu] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(() => {
-    // 从 localStorage 读取登录状态
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('isLoggedIn') === 'true';
-    }
-    return false;
-  });
-
-  // 监听 localStorage 变化
-  React.useEffect(() => {
-    const checkLoginStatus = () => {
-      setIsLoggedIn(localStorage.getItem('isLoggedIn') === 'true');
-    };
-
-    // 监听 storage 事件（当其他标签页修改 localStorage 时）
-    window.addEventListener('storage', checkLoginStatus);
-
-    // 监听焦点事件（当用户从其他标签页切换回来时）
-    window.addEventListener('focus', checkLoginStatus);
-
-    return () => {
-      window.removeEventListener('storage', checkLoginStatus);
-      window.removeEventListener('focus', checkLoginStatus);
-    };
-  }, []);
-
-  const userInitial = isLoggedIn ? 'U' : '登录'; // 未登录显示"登录"文本
+  const { user, signOut } = useAuth();
+  const router = useRouter();
 
   const handleAvatarClick = () => {
-    if (!isLoggedIn) {
+    if (!user) {
       // 未登录时跳转到登录页
-      window.location.href = '/auth';
+      router.push('/auth');
     } else {
       // 已登录时显示用户菜单
       setShowUserMenu(!showUserMenu);
     }
   };
 
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    localStorage.removeItem('isLoggedIn');
+  const handleLogout = async () => {
+    await signOut();
     setShowUserMenu(false);
-    window.location.href = '/';
+    router.push('/');
+  };
+
+  const handleProfileClick = () => {
+    setShowUserMenu(false);
+    router.push('/profile');
   };
 
   return (
@@ -60,62 +42,66 @@ export default function Header({ aiModelName, onOpenSettings }: HeaderProps) {
 
       <div className="header-right">
         <button
-          className="btn btn-secondary header-settings-btn"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-[rgba(0,0,0,0.06)] text-[#1D1D1F] rounded-lg hover:bg-[#F5F5F7] transition-all duration-150"
           onClick={onOpenSettings}
           aria-label="打开设置"
         >
-          <span className="settings-icon">⚙️</span>
-          设置
+          <Settings className="w-5 h-5 text-[rgba(0,0,0,0.6)]" />
+          <span className="text-[15px] font-medium">设置</span>
         </button>
 
-        <div
-          className="header-avatar"
-          onClick={handleAvatarClick}
-          role="button"
-          tabIndex={0}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              handleAvatarClick();
-            }
-          }}
-          aria-label={isLoggedIn ? "用户菜单" : "登录"}
-          aria-expanded={showUserMenu}
-        >
-          {userInitial}
-        </div>
+        <div className="relative">
+          <div
+            className="header-avatar bg-[#007AFF] text-white cursor-pointer hover:scale-105 transition-transform duration-150"
+            onClick={handleAvatarClick}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                handleAvatarClick();
+              }
+            }}
+            aria-label={user ? "用户菜单" : "登录"}
+            aria-expanded={showUserMenu}
+          >
+            {user ? <User className="w-5 h-5" /> : <span className="text-[13px] font-semibold">登录</span>}
+          </div>
 
-        {showUserMenu && (
-          <>
-            <div
-              className="menu-backdrop"
-              onClick={() => setShowUserMenu(false)}
-              aria-hidden="true"
-            />
-            <div
-              className="user-menu-dropdown"
-              role="menu"
-              onMouseLeave={() => setShowUserMenu(false)}
-            >
+          {showUserMenu && user && (
+            <>
               <div
-                className="user-menu-item"
-                role="menuitem"
-                tabIndex={0}
-              >
-                <span className="menu-item-icon">👤</span>
-                <span className="menu-item-text">个人信息</span>
-              </div>
+                className="fixed inset-0 z-10"
+                onClick={() => setShowUserMenu(false)}
+                aria-hidden="true"
+              />
               <div
-                className="user-menu-item"
-                role="menuitem"
-                tabIndex={0}
-                onClick={handleLogout}
+                className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg border border-[rgba(0,0,0,0.06)] shadow-[0_8px_24px_rgba(0,0,0,0.1)] z-20 overflow-hidden"
+                role="menu"
+                onMouseLeave={() => setShowUserMenu(false)}
               >
-                <span className="menu-item-icon">🚪</span>
-                <span className="menu-item-text">退出</span>
+                <div
+                  className="flex items-center gap-3 px-4 py-3 hover:bg-[#F5F5F7] cursor-pointer transition-colors duration-150"
+                  role="menuitem"
+                  tabIndex={0}
+                  onClick={handleProfileClick}
+                >
+                  <User className="w-5 h-5 text-[rgba(0,0,0,0.6)]" />
+                  <span className="text-[15px] text-[#1D1D1F]">个人信息</span>
+                </div>
+                <div className="h-px bg-[rgba(0,0,0,0.06)]" />
+                <div
+                  className="flex items-center gap-3 px-4 py-3 hover:bg-[#F5F5F7] cursor-pointer transition-colors duration-150"
+                  role="menuitem"
+                  tabIndex={0}
+                  onClick={handleLogout}
+                >
+                  <LogOut className="w-5 h-5 text-[rgba(0,0,0,0.6)]" />
+                  <span className="text-[15px] text-[#1D1D1F]">退出</span>
+                </div>
               </div>
-            </div>
-          </>
-        )}
+            </>
+          )}
+        </div>
       </div>
     </header>
   );

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import { Send, Paperclip, Image as ImageIcon, FileText, Sparkles } from 'lucide-react';
 
 export interface ChatMessage {
   id: string;
@@ -142,22 +143,18 @@ export default function Chat({ aiModelName }: ChatProps) {
 
   const quickPrompts = [
     {
-      icon: '🔄',
       text: '生成一个用户注册流程图',
       description: '包含注册、验证、登录步骤'
     },
     {
-      icon: '🏢',
       text: '创建一个项目组织架构图',
       description: '展示团队结构和层级关系'
     },
     {
-      icon: '🧠',
       text: '制作一个思维导图',
       description: '围绕主题展开的创意图'
     },
     {
-      icon: '⚙️',
       text: '设计一个系统架构图',
       description: '展示技术栈和模块关系'
     },
@@ -168,13 +165,18 @@ export default function Chat({ aiModelName }: ChatProps) {
   };
 
   return (
-    <div className="chat-area">
-      <div className="flex-1 flex flex-col bg-gradient-to-br from-[#667eea] to-[#764ba2] m-4 rounded-2xl relative overflow-hidden shadow-[0_10px_40px_rgba(102,126,234,0.3)] transition-all duration-300 hover:shadow-[0_20px_60px_rgba(102,126,234,0.4)] hover:-translate-y-1">
-        <div className="chat-header p-6 flex items-center justify-between bg-white/10 backdrop-blur-md border-b border-white/20">
-          <h3 className="chat-title text-white text-headline font-semibold m-0 text-shadow-sm">{aiModelName}</h3>
-          <button className="chat-close-btn w-8 h-8 rounded-lg bg-white/20 border border-white/30 text-white cursor-pointer flex items-center justify-center transition-all duration-200 hover:bg-white/30 hover:scale-110 text-xl font-light">
-            ×
-          </button>
+    <div className="chat-area w-[500px] flex flex-col flex-shrink-0">
+      <div className="flex-1 flex flex-col bg-[#F9FAFB] m-4 rounded-2xl border border-[rgba(0,0,0,0.06)] overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.06)] transition-all duration-250">
+        <div className="p-4 flex items-center justify-between bg-white border-b border-[rgba(0,0,0,0.06)]">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#007AFF] to-[#5AC8FA] flex items-center justify-center">
+              <Sparkles className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <h3 className="text-[17px] font-semibold text-[#1D1D1F] m-0">{aiModelName}</h3>
+              <p className="text-[13px] text-[rgba(0,0,0,0.5)] m-0">在线</p>
+            </div>
+          </div>
         </div>
 
         <div className="chat-messages flex-1 overflow-y-auto p-6 flex flex-col gap-4 bg-transparent">
@@ -209,20 +211,35 @@ export default function Chat({ aiModelName }: ChatProps) {
               {messages.map((message) => (
                 <div
                   key={message.id}
-                  className={`chat-message flex gap-2 ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
+                  className={`flex gap-2 ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
-                  <div className={`message-avatar w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold ${message.type === 'ai' ? 'bg-white/20 text-white' : 'bg-white text-gray-800'}`}>
-                    {message.type === 'ai' ? '🤖' : '👤'}
-                  </div>
-                  <div className={`message-bubble max-w-[85%] p-3 rounded-xl break-words ${message.type === 'ai' ? 'bg-white/15 text-white border border-white/20 backdrop-blur-md' : 'bg-white/95 text-gray-800'}`}>
+                  {message.type === 'ai' && (
+                    <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#007AFF] to-[#5AC8FA] flex items-center justify-center flex-shrink-0">
+                      <Sparkles className="w-4 h-4 text-white" />
+                    </div>
+                  )}
+                  <div className={`max-w-[75%] px-4 py-2.5 rounded-[18px] break-words text-[15px] leading-[1.4] ${
+                    message.type === 'ai'
+                      ? 'bg-[#E9ECEF] text-[#1D1D1F] rounded-tl-[4px]'
+                      : 'bg-[#007AFF] text-white rounded-tr-[4px]'
+                  }`}>
                     {message.content}
                   </div>
+                  {message.type === 'user' && (
+                    <div className="w-7 h-7 rounded-full bg-[#34C759] flex items-center justify-center flex-shrink-0">
+                      <span className="text-white text-[13px] font-semibold">U</span>
+                    </div>
+                  )}
                 </div>
               ))}
               {isLoading && (
-                <div className="chat-message ai flex gap-2 justify-start">
-                  <div className="message-avatar ai w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold bg-white/20 text-white">🤔</div>
-                  <div className="message-bubble ai bg-white/15 text-white border border-white/20 backdrop-blur-md p-3 rounded-xl">正在思考...</div>
+                <div className="flex gap-2 justify-start">
+                  <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#007AFF] to-[#5AC8FA] flex items-center justify-center flex-shrink-0">
+                    <Sparkles className="w-4 h-4 text-white" />
+                  </div>
+                  <div className="bg-[#E9ECEF] text-[#1D1D1F] px-4 py-2.5 rounded-[18px] rounded-tl-[4px] text-[15px]">
+                    正在思考...
+                  </div>
                 </div>
               )}
               <div ref={messagesEndRef} />
@@ -230,59 +247,55 @@ export default function Chat({ aiModelName }: ChatProps) {
           )}
         </div>
 
-        <div className="chat-input-area p-4 border-t border-white/20 bg-black/10 flex flex-col gap-4">
-          <div className="upload-section flex flex-col gap-1">
-            <div className="upload-buttons flex gap-2">
-              <label className="upload-btn flex-1 h-11 border border-white/30 rounded-xl bg-white/10 text-white cursor-pointer flex items-center justify-center gap-2 transition-all duration-200 hover:border-white/50 hover:bg-white/20 backdrop-blur-md font-body" title="上传图片">
-                <input
-                  type="file"
-                  accept="image/*"
-                  style={{ display: 'none' }}
-                  disabled={isLoading}
-                  onChange={() => {/* 图片上传处理 */}}
-                />
-                <span className="upload-icon text-lg">🖼️</span>
-                <span className="upload-label text-sm font-medium">图片</span>
-              </label>
-              <label className="upload-btn flex-1 h-11 border border-white/30 rounded-xl bg-white/10 text-white cursor-pointer flex items-center justify-center gap-2 transition-all duration-200 hover:border-white/50 hover:bg-white/20 backdrop-blur-md font-body" title="上传文档">
-                <input
-                  type="file"
-                  accept=".md,.txt"
-                  style={{ display: 'none' }}
-                  onChange={handleFileUpload}
-                  disabled={isLoading}
-                />
-                <span className="upload-icon text-lg">📄</span>
-                <span className="upload-label text-sm font-medium">文档</span>
-              </label>
-            </div>
-          </div>
-
-          <div className="input-section">
-            <div className="textarea-wrapper relative">
-              <textarea
-                className="chat-textarea w-full min-h-[44px] max-h-[120px] p-3 pr-12 border border-white/30 rounded-xl font-body text-white bg-white/10 resize-none transition-all duration-200 backdrop-blur-md placeholder:text-white/60 focus:outline-none focus:border-white/50 focus:shadow-[0_0_0_3px_rgba(255,255,255,0.15)] focus:bg-white/15"
-                placeholder="描述您想要创建的图表..."
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                onKeyDown={handleKeyDown}
-                rows={4}
+        <div className="p-4 border-t border-[rgba(0,0,0,0.06)] bg-white flex flex-col gap-3">
+          <div className="flex gap-2">
+            <label className="flex-1 min-h-[36px] border border-[rgba(0,0,0,0.1)] rounded-lg bg-[#FAFAFA] text-[#1D1D1F] cursor-pointer flex items-center justify-center gap-2 transition-all duration-150 hover:bg-[#F5F5F7] hover:border-[rgba(0,0,0,0.15)]" title="上传图片">
+              <input
+                type="file"
+                accept="image/*"
+                style={{ display: 'none' }}
+                disabled={isLoading}
+                onChange={() => {/* 图片上传处理 */}}
               />
-              <button
-                className="send-btn absolute right-1 bottom-3 w-10 h-10 border-2 border-white/30 rounded-lg bg-gradient-to-br from-[#007AFF] to-[#5AC8FA] text-white cursor-pointer flex items-center justify-center transition-all duration-200 shadow-[0_4px_12px_rgba(0,122,255,0.4)] hover:opacity-95 hover:-translate-y-0.5 z-10"
-                onClick={handleSend}
-                disabled={(!inputValue.trim() && !isLoading) || isLoading}
-                title="发送"
-              >
-                {isLoading ? '⏳' : '➤'}
-              </button>
-            </div>
+              <ImageIcon className="w-4 h-4 text-[rgba(0,0,0,0.6)]" />
+              <span className="text-[13px] font-medium">图片</span>
+            </label>
+            <label className="flex-1 min-h-[36px] border border-[rgba(0,0,0,0.1)] rounded-lg bg-[#FAFAFA] text-[#1D1D1F] cursor-pointer flex items-center justify-center gap-2 transition-all duration-150 hover:bg-[#F5F5F7] hover:border-[rgba(0,0,0,0.15)]" title="上传文档">
+              <input
+                type="file"
+                accept=".md,.txt"
+                style={{ display: 'none' }}
+                onChange={handleFileUpload}
+                disabled={isLoading}
+              />
+              <FileText className="w-4 h-4 text-[rgba(0,0,0,0.6)]" />
+              <span className="text-[13px] font-medium">文档</span>
+            </label>
           </div>
 
-          <div className="chart-selector-section flex flex-col gap-1">
-            <label className="chart-selector-label text-subhead text-white/70 text-xs font-medium">图表类型</label>
+          <div className="relative">
+            <textarea
+              className="w-full min-h-[88px] max-h-[120px] px-3 py-2.5 pr-12 border border-[rgba(0,0,0,0.1)] rounded-lg text-[15px] leading-[1.4] text-[#1D1D1F] bg-[#FAFAFA] resize-none transition-all duration-150 placeholder:text-[rgba(0,0,0,0.35)] focus:outline-none focus:border-[#007AFF] focus:ring-3 focus:ring-[rgba(0,122,255,0.15)]"
+              placeholder="描述您想要创建的图表..."
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyDown={handleKeyDown}
+              rows={3}
+            />
+            <button
+              className="absolute right-2 bottom-2.5 w-8 h-8 rounded-full bg-[#007AFF] text-white cursor-pointer flex items-center justify-center transition-all duration-150 hover:bg-[#0051D5] disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_2px_8px_rgba(0,122,255,0.3)]"
+              onClick={handleSend}
+              disabled={(!inputValue.trim() && !isLoading) || isLoading}
+              title="发送"
+            >
+              <Send className="w-4 h-4" />
+            </button>
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <label className="text-[13px] text-[rgba(0,0,0,0.5)] font-medium">图表类型</label>
             <select
-              className="chart-type-select h-11 px-3 border border-white/30 rounded-xl font-body text-white bg-white/10 cursor-pointer transition-all duration-200 appearance-none bg-[url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%2212%22 viewBox=%220%200%2012%2012%22%3E%3Cpath fill=%22white%22 d=%22M6%209L1%204h10z%22/%3E%3C/svg%3E')] bg-no-repeat bg-right-3 center pr-10 backdrop-blur-md hover:border-white/50 hover:bg-white/15 focus:outline-none focus:border-white/50 focus:shadow-[0_0_0_3px_rgba(255,255,255,0.15)] focus:bg-white/15"
+              className="h-10 px-3 border border-[rgba(0,0,0,0.1)] rounded-lg text-[15px] text-[#1D1D1F] bg-[#FAFAFA] cursor-pointer transition-all duration-150 appearance-none bg-[url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%2212%22 viewBox=%220%200%2012%2012%22%3E%3Cpath fill=%22%231D1D1F%22 d=%22M6%209L1%204h10z%22/%3E%3C/svg%3E')] bg-no-repeat bg-[right_12px_center] pr-10 hover:bg-[#F5F5F7] hover:border-[rgba(0,0,0,0.15)] focus:outline-none focus:border-[#007AFF] focus:ring-3 focus:ring-[rgba(0,122,255,0.15)]"
               value={chartType}
               onChange={(e) => setChartType(e.target.value as ChartType)}
               disabled={isLoading}

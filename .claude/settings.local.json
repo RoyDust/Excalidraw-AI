@@ -3,7 +3,16 @@
     "allow": [
       "Bash(kill:*)",
       "Bash(npm run dev)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(pkill:*)",
+      "Bash(taskkill:*)",
+      "Bash(nul:*)",
+      "Bash(npm run dev:*)",
+      "Bash(for route in:*)",
+      "Bash(do:*)",
+      "Bash(done:*)",
+      "Bash(tasklist:*)",
+      "Bash(findstr:*)"
     ],
     "deny": [],
     "ask": []

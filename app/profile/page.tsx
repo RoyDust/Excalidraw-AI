@@ -3,11 +3,17 @@
 import { useState } from 'react';
 import Sidebar, { type SidebarItem } from '@/components/Sidebar';
 import Header from '@/components/Header';
+import { User, Camera, TrendingUp, Calendar, Zap } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function Profile() {
   const [activeItem, setActiveItem] = useState('profile');
   const [aiModelName] = useState('GPT-4o');
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+
+  const { user } = useAuth();
+  console.log(user);
+
 
   const handleSidebarItemClick = (item: SidebarItem) => {
     setActiveItem(item.id);
@@ -29,133 +35,143 @@ export default function Profile() {
           onOpenSettings={() => {}}
         />
 
-        <div className="workspace">
-          <div className="flex-1 flex flex-col bg-gradient-to-br from-[#667eea] to-[#764ba2] m-4 rounded-2xl relative overflow-hidden shadow-[0_10px_40px_rgba(102,126,234,0.3)]">
-            <div className="p-8">
-              <h1 className="text-white text-display-1 m-0 mb-4">个人信息</h1>
-              <p className="text-white/90 text-body m-0 mb-6">
+        <div className="workspace bg-[#F9FAFB] p-6 overflow-y-auto">
+          <div className="max-w-6xl mx-auto">
+            <div className="mb-6">
+              <h1 className="text-[34px] font-bold leading-[1.2] text-[#1D1D1F] m-0 mb-2">个人信息</h1>
+              <p className="text-[15px] text-[rgba(0,0,0,0.5)] m-0">
                 管理您的个人资料和账户设置
               </p>
+            </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div className="lg:col-span-1">
-                  <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20">
-                    <div className="text-center">
-                      <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-6xl text-white shadow-lg">
-                        👤
-                      </div>
-                      <h2 className="text-white text-headline mb-1">用户名</h2>
-                      <p className="text-white/70 text-sm mb-4">user@example.com</p>
-                      <button className="btn btn-secondary w-full">
-                        更换头像
-                      </button>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div className="lg:col-span-1">
+                <div className="bg-white rounded-xl p-6 border border-[rgba(0,0,0,0.06)] shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+                  <div className="text-center">
+                    <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-gradient-to-br from-[#007AFF] to-[#5AC8FA] flex items-center justify-center shadow-[0_4px_12px_rgba(0,122,255,0.2)]">
+                      <User className="w-16 h-16 text-white" />
                     </div>
+                    <h2 className="text-[22px] font-semibold leading-[1.3] text-[#1D1D1F] mb-1">用户名</h2>
+                    <p className="text-[15px] text-[rgba(0,0,0,0.5)] mb-4">user@example.com</p>
+                    <button className="inline-flex items-center justify-center gap-2 w-full min-h-[40px] px-4 py-2 bg-[#F5F5F7] text-[#1D1D1F] text-[15px] font-medium rounded-lg hover:bg-[#E8E8ED] transition-all duration-150">
+                      <Camera className="w-4 h-4" />
+                      更换头像
+                    </button>
+                  </div>
 
-                    <div className="mt-6 pt-6 border-t border-white/20">
-                      <h3 className="text-white font-semibold mb-3">统计信息</h3>
-                      <div className="space-y-3">
-                        <div className="flex justify-between items-center">
-                          <span className="text-white/70">创建图表</span>
-                          <span className="text-white font-semibold">42</span>
+                  <div className="mt-6 pt-6 border-t border-[rgba(0,0,0,0.06)]">
+                    <h3 className="text-[17px] font-semibold text-[#1D1D1F] mb-3">统计信息</h3>
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center">
+                        <div className="flex items-center gap-2">
+                          <TrendingUp className="w-4 h-4 text-[rgba(0,0,0,0.5)]" />
+                          <span className="text-[15px] text-[rgba(0,0,0,0.6)]">创建图表</span>
                         </div>
-                        <div className="flex justify-between items-center">
-                          <span className="text-white/70">使用天数</span>
-                          <span className="text-white font-semibold">15</span>
+                        <span className="text-[17px] font-semibold text-[#1D1D1F]">42</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <div className="flex items-center gap-2">
+                          <Calendar className="w-4 h-4 text-[rgba(0,0,0,0.5)]" />
+                          <span className="text-[15px] text-[rgba(0,0,0,0.6)]">使用天数</span>
                         </div>
-                        <div className="flex justify-between items-center">
-                          <span className="text-white/70">AI 请求</span>
-                          <span className="text-white font-semibold">128</span>
+                        <span className="text-[17px] font-semibold text-[#1D1D1F]">15</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <div className="flex items-center gap-2">
+                          <Zap className="w-4 h-4 text-[rgba(0,0,0,0.5)]" />
+                          <span className="text-[15px] text-[rgba(0,0,0,0.6)]">AI 请求</span>
                         </div>
+                        <span className="text-[17px] font-semibold text-[#1D1D1F]">128</span>
                       </div>
                     </div>
                   </div>
                 </div>
+              </div>
 
-                <div className="lg:col-span-2 space-y-6">
-                  <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20">
-                    <h2 className="text-white text-headline mb-4">基本信息</h2>
-                    <div className="space-y-4">
-                      <div>
-                        <label className="block text-white/80 text-subhead mb-2">姓名</label>
-                        <input
-                          type="text"
-                          defaultValue="用户名"
-                          className="w-full h-11 px-3 border border-white/30 rounded-xl font-body text-white bg-white/10 backdrop-blur-md"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-white/80 text-subhead mb-2">邮箱</label>
-                        <input
-                          type="email"
-                          defaultValue="user@example.com"
-                          className="w-full h-11 px-3 border border-white/30 rounded-xl font-body text-white bg-white/10 backdrop-blur-md"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-white/80 text-subhead mb-2">电话</label>
-                        <input
-                          type="tel"
-                          placeholder="输入电话号码"
-                          className="w-full h-11 px-3 border border-white/30 rounded-xl font-body text-white bg-white/10 backdrop-blur-md"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-white/80 text-subhead mb-2">公司/组织</label>
-                        <input
-                          type="text"
-                          placeholder="输入公司或组织名称"
-                          className="w-full h-11 px-3 border border-white/30 rounded-xl font-body text-white bg-white/10 backdrop-blur-md"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-white/80 text-subhead mb-2">个人简介</label>
-                        <textarea
-                          rows={4}
-                          placeholder="简单介绍一下自己..."
-                          className="w-full px-3 py-2 border border-white/30 rounded-xl font-body text-white bg-white/10 backdrop-blur-md resize-none"
-                        />
-                      </div>
+              <div className="lg:col-span-2 space-y-6">
+                <div className="bg-white rounded-xl p-6 border border-[rgba(0,0,0,0.06)] shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+                  <h2 className="text-[22px] font-normal leading-[1.3] text-[#1D1D1F] mb-4">基本信息</h2>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-[15px] text-[#1D1D1F] font-medium mb-2">姓名</label>
+                      <input
+                        type="text"
+                        defaultValue="用户名"
+                        className="w-full h-11 px-3 border border-[rgba(0,0,0,0.1)] rounded-lg text-[15px] text-[#1D1D1F] bg-[#FAFAFA] focus:outline-none focus:border-[#007AFF] focus:ring-3 focus:ring-[rgba(0,122,255,0.15)] transition-all duration-150"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[15px] text-[#1D1D1F] font-medium mb-2">邮箱</label>
+                      <input
+                        type="email"
+                        defaultValue="user@example.com"
+                        className="w-full h-11 px-3 border border-[rgba(0,0,0,0.1)] rounded-lg text-[15px] text-[#1D1D1F] bg-[#FAFAFA] focus:outline-none focus:border-[#007AFF] focus:ring-3 focus:ring-[rgba(0,122,255,0.15)] transition-all duration-150"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[15px] text-[#1D1D1F] font-medium mb-2">电话</label>
+                      <input
+                        type="tel"
+                        placeholder="输入电话号码"
+                        className="w-full h-11 px-3 border border-[rgba(0,0,0,0.1)] rounded-lg text-[15px] text-[#1D1D1F] bg-[#FAFAFA] placeholder:text-[rgba(0,0,0,0.35)] focus:outline-none focus:border-[#007AFF] focus:ring-3 focus:ring-[rgba(0,122,255,0.15)] transition-all duration-150"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[15px] text-[#1D1D1F] font-medium mb-2">公司/组织</label>
+                      <input
+                        type="text"
+                        placeholder="输入公司或组织名称"
+                        className="w-full h-11 px-3 border border-[rgba(0,0,0,0.1)] rounded-lg text-[15px] text-[#1D1D1F] bg-[#FAFAFA] placeholder:text-[rgba(0,0,0,0.35)] focus:outline-none focus:border-[#007AFF] focus:ring-3 focus:ring-[rgba(0,122,255,0.15)] transition-all duration-150"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[15px] text-[#1D1D1F] font-medium mb-2">个人简介</label>
+                      <textarea
+                        rows={4}
+                        placeholder="简单介绍一下自己..."
+                        className="w-full px-3 py-2.5 border border-[rgba(0,0,0,0.1)] rounded-lg text-[15px] text-[#1D1D1F] bg-[#FAFAFA] placeholder:text-[rgba(0,0,0,0.35)] focus:outline-none focus:border-[#007AFF] focus:ring-3 focus:ring-[rgba(0,122,255,0.15)] transition-all duration-150 resize-none"
+                      />
                     </div>
                   </div>
+                </div>
 
-                  <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20">
-                    <h2 className="text-white text-headline mb-4">安全设置</h2>
-                    <div className="space-y-4">
-                      <div>
-                        <label className="block text-white/80 text-subhead mb-2">当前密码</label>
-                        <input
-                          type="password"
-                          placeholder="输入当前密码"
-                          className="w-full h-11 px-3 border border-white/30 rounded-xl font-body text-white bg-white/10 backdrop-blur-md"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-white/80 text-subhead mb-2">新密码</label>
-                        <input
-                          type="password"
-                          placeholder="输入新密码"
-                          className="w-full h-11 px-3 border border-white/30 rounded-xl font-body text-white bg-white/10 backdrop-blur-md"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-white/80 text-subhead mb-2">确认新密码</label>
-                        <input
-                          type="password"
-                          placeholder="再次输入新密码"
-                          className="w-full h-11 px-3 border border-white/30 rounded-xl font-body text-white bg-white/10 backdrop-blur-md"
-                        />
-                      </div>
+                <div className="bg-white rounded-xl p-6 border border-[rgba(0,0,0,0.06)] shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+                  <h2 className="text-[22px] font-normal leading-[1.3] text-[#1D1D1F] mb-4">安全设置</h2>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-[15px] text-[#1D1D1F] font-medium mb-2">当前密码</label>
+                      <input
+                        type="password"
+                        placeholder="输入当前密码"
+                        className="w-full h-11 px-3 border border-[rgba(0,0,0,0.1)] rounded-lg text-[15px] text-[#1D1D1F] bg-[#FAFAFA] placeholder:text-[rgba(0,0,0,0.35)] focus:outline-none focus:border-[#007AFF] focus:ring-3 focus:ring-[rgba(0,122,255,0.15)] transition-all duration-150"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[15px] text-[#1D1D1F] font-medium mb-2">新密码</label>
+                      <input
+                        type="password"
+                        placeholder="输入新密码"
+                        className="w-full h-11 px-3 border border-[rgba(0,0,0,0.1)] rounded-lg text-[15px] text-[#1D1D1F] bg-[#FAFAFA] placeholder:text-[rgba(0,0,0,0.35)] focus:outline-none focus:border-[#007AFF] focus:ring-3 focus:ring-[rgba(0,122,255,0.15)] transition-all duration-150"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[15px] text-[#1D1D1F] font-medium mb-2">确认新密码</label>
+                      <input
+                        type="password"
+                        placeholder="再次输入新密码"
+                        className="w-full h-11 px-3 border border-[rgba(0,0,0,0.1)] rounded-lg text-[15px] text-[#1D1D1F] bg-[#FAFAFA] placeholder:text-[rgba(0,0,0,0.35)] focus:outline-none focus:border-[#007AFF] focus:ring-3 focus:ring-[rgba(0,122,255,0.15)] transition-all duration-150"
+                      />
                     </div>
                   </div>
+                </div>
 
-                  <div className="flex gap-4">
-                    <button className="btn btn-primary flex-1 h-12 text-lg font-semibold">
-                      保存更改
-                    </button>
-                    <button className="btn btn-secondary flex-1 h-12 text-lg font-semibold">
-                      取消
-                    </button>
-                  </div>
+                <div className="flex gap-4">
+                  <button className="flex-1 min-h-[44px] bg-[#007AFF] text-white font-semibold text-[17px] rounded-lg hover:bg-[#0051D5] hover:-translate-y-[1px] active:translate-y-0 transition-all duration-150 shadow-[0_2px_8px_rgba(0,122,255,0.3)]">
+                    保存更改
+                  </button>
+                  <button className="flex-1 min-h-[44px] bg-[#F5F5F7] text-[#1D1D1F] font-semibold text-[17px] rounded-lg hover:bg-[#E8E8ED] hover:-translate-y-[1px] active:translate-y-0 transition-all duration-150">
+                    取消
+                  </button>
                 </div>
               </div>
             </div>
