@@ -12,7 +12,8 @@
       "Bash(do:*)",
       "Bash(done:*)",
       "Bash(tasklist:*)",
-      "Bash(findstr:*)"
+      "Bash(findstr:*)",
+      "Bash(move \"f:\\Code\\Project\\Smart Excalidraw\\my-app\\app\\home\" \"f:\\Code\\Project\\Smart Excalidraw\\my-app\\app\\(dashboard)\\home\")"
     ],
     "deny": [],
     "ask": []

@@ -1,52 +1,14 @@
 'use client';
 
-import { useState } from 'react';
-import Sidebar, { type SidebarItem } from '@/components/Sidebar';
-import Header from '@/components/Header';
-import ExcalidrawCanvas from '@/components/ExcalidrawCanvas';
-import Chat from '@/components/Chat';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
-export default function Home() {
-  const [activeItem, setActiveItem] = useState('smart-drawing');
-  const [aiModelName] = useState('GPT-4o');
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+export default function RootPage() {
+  const router = useRouter();
 
-  const handleSidebarItemClick = (item: SidebarItem) => {
-    setActiveItem(item.id);
-    // 路由跳转逻辑
-    if (item.path === '/') {
-      window.location.href = '/';
-    } else {
-      window.location.href = item.path;
-    }
-  };
+  useEffect(() => {
+    router.replace('/home');
+  }, [router]);
 
-  const handleOpenSettings = () => {
-    console.log('Open settings');
-    // 这里可以打开设置模态框或跳转到设置页面
-  };
-
-  return (
-    <div className="main-layout">
-      <Sidebar
-        activeItem={activeItem}
-        onItemClick={handleSidebarItemClick}
-        collapsed={sidebarCollapsed}
-        onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
-      />
-
-      <div className="main-content">
-        <Header
-          aiModelName={aiModelName}
-          onOpenSettings={handleOpenSettings}
-        />
-
-        <div className="workspace">
-          <ExcalidrawCanvas />
-          <Chat aiModelName={aiModelName} />
-        </div>
-      </div>
-    </div>
-  );
+  return null;
 }
-

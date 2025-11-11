@@ -15,7 +15,7 @@ const sidebarItems: SidebarItem[] = [
     id: 'smart-drawing',
     label: '智能绘图',
     icon: <Sparkles className="w-5 h-5" />,
-    path: '/',
+    path: '/home',
   },
   {
     id: 'ai-settings',

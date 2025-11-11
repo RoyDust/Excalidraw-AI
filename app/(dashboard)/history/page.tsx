@@ -1,8 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import Sidebar, { type SidebarItem } from '@/components/Sidebar';
-import Header from '@/components/Header';
 import { Search, Filter, Trash2, FileText, Brain, Building2, Calendar } from 'lucide-react';
 
 interface HistoryItem {
@@ -47,38 +45,17 @@ const mockHistory: HistoryItem[] = [
 ];
 
 export default function History() {
-  const [activeItem, setActiveItem] = useState('history');
-  const [aiModelName] = useState('GPT-4o');
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-
-  const handleSidebarItemClick = (item: SidebarItem) => {
-    setActiveItem(item.id);
-    window.location.href = item.path;
-  };
-
   return (
     <div className="main-layout">
-      <Sidebar
-        activeItem={activeItem}
-        onItemClick={handleSidebarItemClick}
-        collapsed={sidebarCollapsed}
-        onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
-      />
-
       <div className="main-content">
-        <Header
-          aiModelName={aiModelName}
-          onOpenSettings={() => {}}
-        />
-
         <div className="workspace bg-[#F9FAFB] p-6 overflow-y-auto">
           <div className="max-w-7xl mx-auto">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h1 className="text-[34px] font-bold leading-[1.2] text-[#1D1D1F] m-0 mb-2">历史记录</h1>
-                <p className="text-[15px] text-[rgba(0,0,0,0.5)] m-0">
-                  查看和管理您之前创建的图表
-                </p>
+                <h1 className="text-[34px] font-bold leading-[1.2] text-[#1D1D1F] m-0 mb-2">
+                  历史记录
+                </h1>
+                <p className="text-[15px] text-[rgba(0,0,0,0.5)] m-0">查看和管理您之前创建的图表</p>
               </div>
               <button className="inline-flex items-center justify-center gap-2 min-h-[40px] px-4 py-2 bg-[#FF3B30] text-white text-[15px] font-medium rounded-lg hover:bg-[#D7140A] transition-all duration-150">
                 <Trash2 className="w-4 h-4" />
@@ -131,7 +108,11 @@ export default function History() {
                         <span>{item.date}</span>
                       </div>
                       <span className="text-[13px] text-[#007AFF] bg-[#E3F2FD] px-2 py-0.5 rounded-md font-medium">
-                        {item.type === 'flowchart' ? '流程图' : item.type === 'mindmap' ? '思维导图' : '组织架构'}
+                        {item.type === 'flowchart'
+                          ? '流程图'
+                          : item.type === 'mindmap'
+                            ? '思维导图'
+                            : '组织架构'}
                       </span>
                     </div>
                     <div className="flex gap-2">
