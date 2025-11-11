@@ -13,87 +13,69 @@ export default function Header({ aiModelName, onOpenSettings }: HeaderProps) {
   const userInitial = 'U'; // 可以从用户信息中获取
 
   return (
-    <header className="header">
-      <div className="header-left">
-        <div className="header-ai-info">
-          <span className="header-ai-name">{aiModelName}</span>
-          <span className="header-ai-status">在线</span>
-        </div>
-      </div>
+    <header className="header flex justify-end items-center ">
+
 
       <div className="header-right">
         <button
-          className="btn btn-secondary"
+          className="btn btn-secondary header-settings-btn"
           onClick={onOpenSettings}
-          style={{ minHeight: '36px', padding: '4px 16px', fontSize: '15px' }}
+          aria-label="打开设置"
         >
-          配置管理
+          <span className="settings-icon">⚙️</span>
+          设置
         </button>
 
         <div
           className="header-avatar"
           onClick={() => setShowUserMenu(!showUserMenu)}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              setShowUserMenu(!showUserMenu);
+            }
+          }}
+          aria-label="用户菜单"
+          aria-expanded={showUserMenu}
         >
           {userInitial}
         </div>
 
         {showUserMenu && (
-          <div
-            style={{
-              position: 'absolute',
-              top: '56px',
-              right: '24px',
-              background: 'var(--bg-primary)',
-              border: '1px solid var(--border-light)',
-              borderRadius: '8px',
-              boxShadow: '0 4px 16px rgba(0, 0, 0, 0.15)',
-              padding: '8px',
-              zIndex: 1000,
-              minWidth: '160px',
-            }}
-            onMouseLeave={() => setShowUserMenu(false)}
-          >
+          <>
             <div
-              style={{
-                padding: '8px 16px',
-                fontSize: '15px',
-                color: 'var(--text-primary)',
-                cursor: 'pointer',
-                borderRadius: '6px',
-                transition: 'var(--transition)',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'var(--bg-secondary)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'transparent';
-              }}
-            >
-              个人信息
-            </div>
+              className="menu-backdrop"
+              onClick={() => setShowUserMenu(false)}
+              aria-hidden="true"
+            />
             <div
-              style={{
-                padding: '8px 16px',
-                fontSize: '15px',
-                color: 'var(--text-primary)',
-                cursor: 'pointer',
-                borderRadius: '6px',
-                transition: 'var(--transition)',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'var(--bg-secondary)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'transparent';
-              }}
-              onClick={() => {
-                // 退出登录逻辑
-                setShowUserMenu(false);
-              }}
+              className="user-menu-dropdown"
+              role="menu"
+              onMouseLeave={() => setShowUserMenu(false)}
             >
-              退出
+              <div
+                className="user-menu-item"
+                role="menuitem"
+                tabIndex={0}
+              >
+                <span className="menu-item-icon">👤</span>
+                <span className="menu-item-text">个人信息</span>
+              </div>
+              <div
+                className="user-menu-item"
+                role="menuitem"
+                tabIndex={0}
+                onClick={() => {
+                  // 退出登录逻辑
+                  setShowUserMenu(false);
+                }}
+              >
+                <span className="menu-item-icon">🚪</span>
+                <span className="menu-item-text">退出</span>
+              </div>
             </div>
-          </div>
+          </>
         )}
       </div>
     </header>

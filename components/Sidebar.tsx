@@ -13,7 +13,7 @@ const sidebarItems: SidebarItem[] = [
   {
     id: 'smart-drawing',
     label: '智能绘图',
-    icon: <span>🎨</span>,
+    icon: <span>✨</span>,
     path: '/',
   },
   {
@@ -25,7 +25,7 @@ const sidebarItems: SidebarItem[] = [
   {
     id: 'history',
     label: '历史记录',
-    icon: <span>📋</span>,
+    icon: <span>📚</span>,
     path: '/history',
   },
   {

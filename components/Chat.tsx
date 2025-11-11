@@ -94,7 +94,7 @@ export default function Chat({ aiModelName }: ChatProps) {
     }, 1000);
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSend();
@@ -141,10 +141,26 @@ export default function Chat({ aiModelName }: ChatProps) {
   };
 
   const quickPrompts = [
-    '生成一个用户注册流程图',
-    '创建一个项目组织架构图',
-    '制作一个思维导图',
-    '设计一个系统架构图',
+    {
+      icon: '🔄',
+      text: '生成一个用户注册流程图',
+      description: '包含注册、验证、登录步骤'
+    },
+    {
+      icon: '🏢',
+      text: '创建一个项目组织架构图',
+      description: '展示团队结构和层级关系'
+    },
+    {
+      icon: '🧠',
+      text: '制作一个思维导图',
+      description: '围绕主题展开的创意图'
+    },
+    {
+      icon: '⚙️',
+      text: '设计一个系统架构图',
+      description: '展示技术栈和模块关系'
+    },
   ];
 
   const handleQuickPrompt = (prompt: string) => {
@@ -153,146 +169,130 @@ export default function Chat({ aiModelName }: ChatProps) {
 
   return (
     <div className="chat-area">
-      <div className="chat-header">
-        <h3 className="chat-title">{aiModelName}</h3>
-        <button className="chat-close-btn" title="关闭Chat">
-          ×
-        </button>
-      </div>
-
-      <div className="chat-messages">
-        {messages.length === 0 ? (
-          <div className="chat-empty-state">
-            <div className="empty-icon">🎨</div>
-            <h4 className="empty-title">开始与 AI 对话</h4>
-            <p className="empty-description">
-              描述你想要创建的图表，AI将为你生成
-            </p>
-            <div className="quick-prompts">
-              {quickPrompts.map((prompt, index) => (
-                <button
-                  key={index}
-                  className="quick-prompt"
-                  onClick={() => handleQuickPrompt(prompt)}
-                >
-                  {prompt}
-                </button>
-              ))}
-            </div>
-          </div>
-        ) : (
-          <>
-            {messages.map((message) => (
-              <div
-                key={message.id}
-                className={`chat-message ${message.type}`}
-              >
-                <div className={`message-avatar ${message.type}`}>
-                  {message.type === 'ai' ? '🤖' : '👤'}
-                </div>
-                <div className={`message-bubble ${message.type}`}>
-                  {message.content}
-                </div>
-              </div>
-            ))}
-            {isLoading && (
-              <div className="chat-message ai">
-                <div className="message-avatar ai">🤔</div>
-                <div className="message-bubble ai">正在思考...</div>
-              </div>
-            )}
-            <div ref={messagesEndRef} />
-          </>
-        )}
-      </div>
-
-      <div className="chat-input-area">
-        <div className="input-group">
-          <textarea
-            className="chat-textarea"
-            placeholder="描述您想要创建的图表..."
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            onKeyPress={handleKeyPress}
-            rows={1}
-            style={{ minHeight: '44px', maxHeight: '120px' }}
-          />
-          <div className="upload-buttons">
-            <label className="upload-btn" title="上传图片">
-              <input
-                type="file"
-                accept="image/*"
-                style={{ display: 'none' }}
-                disabled={isLoading}
-              />
-              🖼️
-            </label>
-            <label className="upload-btn" title="上传文档">
-              <input
-                type="file"
-                accept=".md,.txt"
-                style={{ display: 'none' }}
-                onChange={handleFileUpload}
-                disabled={isLoading}
-              />
-              📄
-            </label>
-          </div>
-          <button
-            className="send-btn"
-            onClick={handleSend}
-            disabled={(!inputValue.trim() && !isLoading) || isLoading}
-            title="发送"
-          >
-            {isLoading ? '⏳' : '➤'}
+      <div className="flex-1 flex flex-col bg-gradient-to-br from-[#667eea] to-[#764ba2] m-4 rounded-2xl relative overflow-hidden shadow-[0_10px_40px_rgba(102,126,234,0.3)] transition-all duration-300 hover:shadow-[0_20px_60px_rgba(102,126,234,0.4)] hover:-translate-y-1">
+        <div className="chat-header p-6 flex items-center justify-between bg-white/10 backdrop-blur-md border-b border-white/20">
+          <h3 className="chat-title text-white text-headline font-semibold m-0 text-shadow-sm">{aiModelName}</h3>
+          <button className="chat-close-btn w-8 h-8 rounded-lg bg-white/20 border border-white/30 text-white cursor-pointer flex items-center justify-center transition-all duration-200 hover:bg-white/30 hover:scale-110 text-xl font-light">
+            ×
           </button>
         </div>
 
-        <div className="chart-type-selector">
-          <label className="radio-btn">
-            <input
-              type="radio"
-              name="chartType"
-              value="auto"
-              checked={chartType === 'auto'}
-              onChange={() => setChartType('auto')}
+        <div className="chat-messages flex-1 overflow-y-auto p-6 flex flex-col gap-4 bg-transparent">
+          {messages.length === 0 ? (
+            <div className="chat-empty-state flex-1 flex flex-col items-center justify-center text-center text-white p-10">
+              <div className="empty-icon-wrapper mb-6">
+                <div className="empty-icon text-5xl animate-bounce">✨</div>
+              </div>
+              <h4 className="empty-title text-white text-headline m-0 mb-2">开始与 AI 对话</h4>
+              <p className="empty-description text-white/90 text-body m-0 mb-6">
+                描述你想要创建的图表，AI将为你生成
+              </p>
+              <div className="quick-prompts flex flex-col gap-2 mt-6 w-full max-w-[320px]">
+                {quickPrompts.map((prompt, index) => (
+                  <button
+                    key={index}
+                    className="quick-prompt flex items-center gap-3 p-4 bg-white/10 border border-white/20 rounded-xl text-white/90 font-body cursor-pointer transition-all duration-200 relative overflow-hidden backdrop-blur-md hover:border-white/40 hover:text-white hover:translate-x-1 hover:shadow-lg"
+                    onClick={() => handleQuickPrompt(prompt.text)}
+                  >
+                    <span className="quick-prompt-icon text-2xl relative z-10">{prompt.icon}</span>
+                    <div className="quick-prompt-content flex-1 flex flex-col gap-1 relative z-10">
+                      <span className="quick-prompt-text font-semibold text-inherit">{prompt.text}</span>
+                      <span className="quick-prompt-description text-sm text-white/70">{prompt.description}</span>
+                    </div>
+                    <span className="quick-prompt-arrow text-xl text-white opacity-0 -translate-x-1 transition-all duration-200 relative z-10">→</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <>
+              {messages.map((message) => (
+                <div
+                  key={message.id}
+                  className={`chat-message flex gap-2 ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
+                >
+                  <div className={`message-avatar w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold ${message.type === 'ai' ? 'bg-white/20 text-white' : 'bg-white text-gray-800'}`}>
+                    {message.type === 'ai' ? '🤖' : '👤'}
+                  </div>
+                  <div className={`message-bubble max-w-[85%] p-3 rounded-xl break-words ${message.type === 'ai' ? 'bg-white/15 text-white border border-white/20 backdrop-blur-md' : 'bg-white/95 text-gray-800'}`}>
+                    {message.content}
+                  </div>
+                </div>
+              ))}
+              {isLoading && (
+                <div className="chat-message ai flex gap-2 justify-start">
+                  <div className="message-avatar ai w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold bg-white/20 text-white">🤔</div>
+                  <div className="message-bubble ai bg-white/15 text-white border border-white/20 backdrop-blur-md p-3 rounded-xl">正在思考...</div>
+                </div>
+              )}
+              <div ref={messagesEndRef} />
+            </>
+          )}
+        </div>
+
+        <div className="chat-input-area p-4 border-t border-white/20 bg-black/10 flex flex-col gap-4">
+          <div className="upload-section flex flex-col gap-1">
+            <div className="upload-buttons flex gap-2">
+              <label className="upload-btn flex-1 h-11 border border-white/30 rounded-xl bg-white/10 text-white cursor-pointer flex items-center justify-center gap-2 transition-all duration-200 hover:border-white/50 hover:bg-white/20 backdrop-blur-md font-body" title="上传图片">
+                <input
+                  type="file"
+                  accept="image/*"
+                  style={{ display: 'none' }}
+                  disabled={isLoading}
+                  onChange={() => {/* 图片上传处理 */}}
+                />
+                <span className="upload-icon text-lg">🖼️</span>
+                <span className="upload-label text-sm font-medium">图片</span>
+              </label>
+              <label className="upload-btn flex-1 h-11 border border-white/30 rounded-xl bg-white/10 text-white cursor-pointer flex items-center justify-center gap-2 transition-all duration-200 hover:border-white/50 hover:bg-white/20 backdrop-blur-md font-body" title="上传文档">
+                <input
+                  type="file"
+                  accept=".md,.txt"
+                  style={{ display: 'none' }}
+                  onChange={handleFileUpload}
+                  disabled={isLoading}
+                />
+                <span className="upload-icon text-lg">📄</span>
+                <span className="upload-label text-sm font-medium">文档</span>
+              </label>
+            </div>
+          </div>
+
+          <div className="input-section">
+            <div className="textarea-wrapper relative">
+              <textarea
+                className="chat-textarea w-full min-h-[44px] max-h-[120px] p-3 pr-12 border border-white/30 rounded-xl font-body text-white bg-white/10 resize-none transition-all duration-200 backdrop-blur-md placeholder:text-white/60 focus:outline-none focus:border-white/50 focus:shadow-[0_0_0_3px_rgba(255,255,255,0.15)] focus:bg-white/15"
+                placeholder="描述您想要创建的图表..."
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                onKeyDown={handleKeyDown}
+                rows={4}
+              />
+              <button
+                className="send-btn absolute right-1 bottom-3 w-10 h-10 border-2 border-white/30 rounded-lg bg-gradient-to-br from-[#007AFF] to-[#5AC8FA] text-white cursor-pointer flex items-center justify-center transition-all duration-200 shadow-[0_4px_12px_rgba(0,122,255,0.4)] hover:opacity-95 hover:-translate-y-0.5 z-10"
+                onClick={handleSend}
+                disabled={(!inputValue.trim() && !isLoading) || isLoading}
+                title="发送"
+              >
+                {isLoading ? '⏳' : '➤'}
+              </button>
+            </div>
+          </div>
+
+          <div className="chart-selector-section flex flex-col gap-1">
+            <label className="chart-selector-label text-subhead text-white/70 text-xs font-medium">图表类型</label>
+            <select
+              className="chart-type-select h-11 px-3 border border-white/30 rounded-xl font-body text-white bg-white/10 cursor-pointer transition-all duration-200 appearance-none bg-[url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%2212%22 viewBox=%220%200%2012%2012%22%3E%3Cpath fill=%22white%22 d=%22M6%209L1%204h10z%22/%3E%3C/svg%3E')] bg-no-repeat bg-right-3 center pr-10 backdrop-blur-md hover:border-white/50 hover:bg-white/15 focus:outline-none focus:border-white/50 focus:shadow-[0_0_0_3px_rgba(255,255,255,0.15)] focus:bg-white/15"
+              value={chartType}
+              onChange={(e) => setChartType(e.target.value as ChartType)}
               disabled={isLoading}
-            />
-            自动
-          </label>
-          <label className="radio-btn">
-            <input
-              type="radio"
-              name="chartType"
-              value="flowchart"
-              checked={chartType === 'flowchart'}
-              onChange={() => setChartType('flowchart')}
-              disabled={isLoading}
-            />
-            流程图
-          </label>
-          <label className="radio-btn">
-            <input
-              type="radio"
-              name="chartType"
-              value="mindmap"
-              checked={chartType === 'mindmap'}
-              onChange={() => setChartType('mindmap')}
-              disabled={isLoading}
-            />
-            思维导图
-          </label>
-          <label className="radio-btn">
-            <input
-              type="radio"
-              name="chartType"
-              value="orgchart"
-              checked={chartType === 'orgchart'}
-              onChange={() => setChartType('orgchart')}
-              disabled={isLoading}
-            />
-            组织架构图
-          </label>
+            >
+              <option value="auto">自动识别</option>
+              <option value="flowchart">流程图</option>
+              <option value="mindmap">思维导图</option>
+              <option value="orgchart">组织架构图</option>
+            </select>
+          </div>
         </div>
       </div>
     </div>
