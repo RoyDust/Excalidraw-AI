@@ -13,8 +13,12 @@ export default function Home() {
 
   const handleSidebarItemClick = (item: SidebarItem) => {
     setActiveItem(item.id);
-    // 这里可以添加路由跳转逻辑
-    console.log('Navigate to:', item.path);
+    // 路由跳转逻辑
+    if (item.path === '/') {
+      window.location.href = '/';
+    } else {
+      window.location.href = item.path;
+    }
   };
 
   const handleOpenSettings = () => {
